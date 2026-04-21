@@ -429,7 +429,7 @@ export default function ArcGM() {
             <div className="logo-dot" />
             <span className="logo-text">GM · ARC NETWORK</span>
           </div>
-          <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>TESTNET</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}><div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>TESTNET</div><a href="https://faucet.circle.com" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.75rem", color: "#00E5FF", textDecoration: "none", display: "flex", alignItems: "center", gap: 4, background: "rgba(0,229,255,0.08)", border: "1px solid rgba(0,229,255,0.2)", padding: "4px 10px", borderRadius: 20 }}>🚰 Get test USDC</a></div>
           {!isConnected ? (
             <button className="connect-btn" onClick={handleConnect}>Connect Wallet</button>
           ) : isWrongNetwork ? (
