@@ -10,23 +10,200 @@ export const arcTestnet = {
 };
 
 export const CONTRACT_ABI = [
-  "function gm(address referrer) external",
-  "function restoreStreak() external",
-  "function getTotalGlobalGMs() view returns (uint256)",
-  "function getUserCount() view returns (uint256)",
-  "function getFirstGMToday() view returns (address)",
-  "function getUTCDay() view returns (uint256)",
-  "function getMultiplier(uint256 streak) view returns (uint256)",
-  "function getRestoreCost(address wallet) view returns (uint256)",
-  "function canRestore(address wallet) view returns (bool)",
-  "function getBadges(address w) view returns (uint256)",
-  "function hasBadge(address w, uint8 id) view returns (bool)",
-  "function getUserMain(address w) view returns (uint256 totalPoints, uint256 totalGMs, uint256 streak, bool canGMToday)",
-  "function getUserStreak(address w) view returns (uint256 streak, uint256 longestStreak, uint256 missedDay, bool canRestoreStreak, uint256 restoreCost)",
-  "function getUserReferral(address w) view returns (uint256 referralCount, address referredBy)",
-  "function getLeaderboardPage(uint256 start, uint256 end) view returns (address[] wallets, uint256[] points)",
-  "function getLeaderboardStats(uint256 start, uint256 end) view returns (uint256[] streaks, uint256[] gms, uint256[] badges)",
-  "function migrateUser(address wallet, uint256 totalPoints, uint256 totalGMs, uint256 streak, uint256 longestStreak) external",
-  "function adminUpdateUser(address wallet, uint256 totalPoints, uint256 totalGMs, uint256 streak, uint256 longestStreak) external",
-  "function transferOwnership(address newOwner) external",
+  {
+    "inputs": [{"name": "referrer", "type": "address"}],
+    "name": "gm",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "restoreStreak",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalGlobalGMs",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUserCount",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUTCDay",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "streak", "type": "uint256"}],
+    "name": "getMultiplier",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "wallet", "type": "address"}],
+    "name": "getRestoreCost",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "wallet", "type": "address"}],
+    "name": "canRestore",
+    "outputs": [{"name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "w", "type": "address"}],
+    "name": "getBadges",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "w", "type": "address"}, {"name": "id", "type": "uint8"}],
+    "name": "hasBadge",
+    "outputs": [{"name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "w", "type": "address"}],
+    "name": "getUserMain",
+    "outputs": [
+      {"name": "totalPoints", "type": "uint256"},
+      {"name": "totalGMs", "type": "uint256"},
+      {"name": "streak", "type": "uint256"},
+      {"name": "canGMToday", "type": "bool"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "w", "type": "address"}],
+    "name": "getUserStreak",
+    "outputs": [
+      {"name": "streak", "type": "uint256"},
+      {"name": "longestStreak", "type": "uint256"},
+      {"name": "missedDay", "type": "uint256"},
+      {"name": "canRestoreStreak", "type": "bool"},
+      {"name": "restoreCost", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "w", "type": "address"}],
+    "name": "getUserReferral",
+    "outputs": [
+      {"name": "referralCount", "type": "uint256"},
+      {"name": "referredBy", "type": "address"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"name": "start", "type": "uint256"},
+      {"name": "end", "type": "uint256"}
+    ],
+    "name": "getLeaderboardPage",
+    "outputs": [
+      {"name": "wallets", "type": "address[]"},
+      {"name": "points", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"name": "start", "type": "uint256"},
+      {"name": "end", "type": "uint256"}
+    ],
+    "name": "getLeaderboardStats",
+    "outputs": [
+      {"name": "streaks", "type": "uint256[]"},
+      {"name": "gms", "type": "uint256[]"},
+      {"name": "badges", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"name": "wallet", "type": "address"},
+      {"name": "totalPoints", "type": "uint256"},
+      {"name": "totalGMs", "type": "uint256"},
+      {"name": "streak", "type": "uint256"},
+      {"name": "longestStreak", "type": "uint256"}
+    ],
+    "name": "migrateUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"name": "wallet", "type": "address"},
+      {"name": "totalPoints", "type": "uint256"},
+      {"name": "totalGMs", "type": "uint256"},
+      {"name": "streak", "type": "uint256"},
+      {"name": "longestStreak", "type": "uint256"}
+    ],
+    "name": "adminUpdateUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "newOwner", "type": "address"}],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "name": "user", "type": "address"},
+      {"indexed": false, "name": "day", "type": "uint256"},
+      {"indexed": false, "name": "streak", "type": "uint256"},
+      {"indexed": false, "name": "points", "type": "uint256"}
+    ],
+    "name": "GMSent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "name": "user", "type": "address"},
+      {"indexed": false, "name": "badgeId", "type": "uint8"},
+      {"indexed": false, "name": "points", "type": "uint256"}
+    ],
+    "name": "BadgeAwarded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "name": "user", "type": "address"},
+      {"indexed": false, "name": "streak", "type": "uint256"},
+      {"indexed": false, "name": "cost", "type": "uint256"}
+    ],
+    "name": "StreakRestored",
+    "type": "event"
+  }
 ];
