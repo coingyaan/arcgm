@@ -55,7 +55,6 @@ export default function ArcGM() {
   const [tab, setTab] = useState("leaderboard");
   const [gmFired, setGmFired] = useState(false);
   const [particles, setParticles] = useState([]);
-  const [copied, setCopied] = useState(false);
   const [showBadges, setShowBadges] = useState(false);
 
   // ── READ: Global GMs ──
@@ -81,16 +80,6 @@ export default function ArcGM() {
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: "getUserStreak",
-    args: [address],
-    enabled: !!address,
-    watch: true,
-  });
-
-  // ── READ: User referral info ──
-  const { data: userReferral, refetch: refetchUserReferral } = useReadContract({
-    address: CONTRACT_ADDRESS,
-    abi: CONTRACT_ABI,
-    functionName: "getUserReferral",
     args: [address],
     enabled: !!address,
     watch: true,
@@ -136,7 +125,6 @@ export default function ArcGM() {
     refetchTotal();
     refetchUserMain();
     refetchUserStreak();
-    refetchUserReferral();
     refetchBadges();
     refetchLbPage();
     refetchLbStats();
@@ -153,9 +141,7 @@ export default function ArcGM() {
   const longestStreak = userStreak ? Number(userStreak[1]) : 0;
   const canRestore    = userStreak ? userStreak[3] : false;
   const restoreCost   = userStreak ? Number(userStreak[4]) / 1e18 : 0;
-  const myReferrals   = userReferral ? Number(userReferral[0]) : 0;
   const globalGMs     = totalGMsData ? Number(totalGMsData) : 0;
-  const MAX_REFERRALS = 3;
 
   // ── PARSE LEADERBOARD ──
   const leaderboard = (lbPage && lbStats)
@@ -254,13 +240,6 @@ export default function ArcGM() {
   };
 
   const handleConnect = () => connect({ connector: injected() });
-
-  const handleCopyReferral = () => {
-    if (myReferrals >= MAX_REFERRALS) return;
-    navigator.clipboard?.writeText(`https://arcgm.vercel.app?ref=${address}`).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const isWrongNetwork = isConnected && chain?.id !== arcTestnet.id;
 
@@ -551,22 +530,35 @@ export default function ArcGM() {
 
               <div className="divider" />
 
-              {/* REFERRAL */}
+              {/* STREAK RESTORE COST TABLE */}
               <div>
-                <div className="stat-label" style={{ marginBottom: 8 }}>Referrals</div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
-                  <span>{myReferrals} / {MAX_REFERRALS} used</span>
-                  <span style={{ color: myReferrals >= MAX_REFERRALS ? "#FF6B35" : "#00FF88" }}>
-                    {myReferrals >= MAX_REFERRALS ? "Capped" : `${MAX_REFERRALS - myReferrals} left`}
-                  </span>
+                <div className="stat-label" style={{ marginBottom: 8 }}>Streak Restore Cost</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {[
+                    { label: "1 to 7 days", cost: 25, active: myStreak >= 1 && myStreak <= 7 },
+                    { label: "8 to 14 days", cost: 50, active: myStreak >= 8 && myStreak <= 14 },
+                    { label: "15 to 29 days", cost: 75, active: myStreak >= 15 && myStreak <= 29 },
+                    { label: "30+ days", cost: 100, active: myStreak >= 30 },
+                  ].map((row, i) => (
+                    <div key={i} style={{
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      padding: "7px 10px", borderRadius: 8,
+                      background: row.active ? "rgba(255,107,53,0.1)" : "rgba(255,255,255,0.02)",
+                      border: `1px solid ${row.active ? "rgba(255,107,53,0.3)" : "rgba(255,255,255,0.05)"}`,
+                      fontSize: "0.72rem"
+                    }}>
+                      <span style={{ color: row.active ? "#FF6B35" : "rgba(255,255,255,0.4)" }}>
+                        {row.active ? "→ " : ""}{row.label}
+                      </span>
+                      <span style={{ color: row.active ? "#FF6B35" : "rgba(255,255,255,0.3)", fontWeight: 700 }}>
+                        {row.cost} pts
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <div className="ref-bar-wrap">
-                  <div className="ref-bar-fill" style={{ width: `${(myReferrals / MAX_REFERRALS) * 100}%` }} />
+                <div style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.2)", marginTop: 6, textAlign: "center" }}>
+                  24h window to restore · Points deducted from total
                 </div>
-                <button className="ref-btn" onClick={handleCopyReferral} disabled={myReferrals >= MAX_REFERRALS}>
-                  {copied ? "✓ Copied!" : "📋 Copy Referral Link"}
-                </button>
-                <div className="ref-cap-note">Max {MAX_REFERRALS} referrals · Activates after 7 GMs</div>
               </div>
             </div>
 
