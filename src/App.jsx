@@ -58,8 +58,6 @@ export default function ArcGM() {
   const [copied, setCopied] = useState(false);
   const [showBadges, setShowBadges] = useState(false);
 
-  const referrer = new URLSearchParams(window.location.search).get("ref") || "0x0000000000000000000000000000000000000000";
-
   // ── READ: Global GMs ──
   const { data: totalGMsData, refetch: refetchTotal } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -239,7 +237,7 @@ export default function ArcGM() {
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: "gm",
-      args: [referrer],
+      args: [],
       chainId: arcTestnet.id,
     });
   };
