@@ -1,7 +1,7 @@
 import { createConfig, http } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 
-export const CONTRACT_ADDRESS = "0x0E6d86a33FF7fB39BBc3F512f8A804E10295939f";
+export const CONTRACT_ADDRESS = "0x3a61Aa19b56421bE3d6f7F72a9B7af4358591eC0";
 
 export const arcTestnet = {
   id: 5042002,
@@ -22,7 +22,7 @@ export const wagmiConfig = createConfig({
 
 export const CONTRACT_ABI = [
   {
-    "inputs": [{"name": "referrer", "type": "address"}],
+    "inputs": [],
     "name": "gm",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -117,16 +117,6 @@ export const CONTRACT_ABI = [
     "type": "function"
   },
   {
-    "inputs": [{"name": "w", "type": "address"}],
-    "name": "getUserReferral",
-    "outputs": [
-      {"name": "referralCount", "type": "uint256"},
-      {"name": "referredBy", "type": "address"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {"name": "start", "type": "uint256"},
       {"name": "end", "type": "uint256"}
@@ -175,6 +165,32 @@ export const CONTRACT_ABI = [
       {"name": "longestStreak", "type": "uint256"}
     ],
     "name": "adminUpdateUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"name": "cost1to7", "type": "uint256"},
+      {"name": "cost8to14", "type": "uint256"},
+      {"name": "cost15to29", "type": "uint256"},
+      {"name": "cost30plus", "type": "uint256"}
+    ],
+    "name": "updateRestoreCosts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "bonus", "type": "uint256"}],
+    "name": "updateFirstGMBonus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "limit", "type": "uint256"}],
+    "name": "updateOGLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
