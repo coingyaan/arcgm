@@ -1,3 +1,6 @@
+import { createConfig, http } from 'wagmi'
+import { injected } from 'wagmi/connectors'
+
 export const CONTRACT_ADDRESS = "0x0E6d86a33FF7fB39BBc3F512f8A804E10295939f";
 
 export const arcTestnet = {
@@ -8,6 +11,14 @@ export const arcTestnet = {
   rpcUrls: { default: { http: ["https://rpc.testnet.arc.network"] } },
   blockExplorers: { default: { name: "ArcScan", url: "https://testnet.arcscan.app" } },
 };
+
+export const wagmiConfig = createConfig({
+  chains: [arcTestnet],
+  connectors: [injected()],
+  transports: {
+    [arcTestnet.id]: http("https://rpc.testnet.arc.network"),
+  },
+});
 
 export const CONTRACT_ABI = [
   {
