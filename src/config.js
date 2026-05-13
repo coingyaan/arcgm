@@ -61,6 +61,8 @@ export const CONTRACT_ABI = [
   { inputs:[], name:"getUserCount", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
   { inputs:[], name:"getUTCDay", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
   { inputs:[], name:"winnersShare", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
+  { inputs:[], name:"devFee", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
+  { inputs:[], name:"marketingFee", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
   { inputs:[], name:"minEntry", outputs:[{type:"uint256"}], stateMutability:"view", type:"function" },
   { inputs:[{name:"",type:"uint8"}], name:"assets", outputs:[{name:"name",type:"string"},{name:"storkId",type:"bytes32"},{name:"active",type:"bool"}], stateMutability:"view", type:"function" },
 
