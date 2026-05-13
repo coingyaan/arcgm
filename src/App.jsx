@@ -87,7 +87,7 @@ function TradingViewChart({ interval, setInterval: setTF }) {
     ref.current.appendChild(s);
   }, [interval, key]);
 
-  const tfs = [["1","1m"],["5","5m"],["15","15m"],["60","1h"],["240","4h"],["D","1D"]];
+  const tfs = [["240","4h"],["D","24h"]];
 
   return (
     <div style={{ background:"#0D1119", border:"1px solid #1A2235", borderRadius:14, overflow:"hidden" }}>
@@ -198,8 +198,8 @@ export default function ArcGM() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const [tab, setTab] = useState("predict");
-  const [chartInterval, setChartInterval] = useState("5");
   const [roundType, setRoundType] = useState(0); // 0=4h, 1=24h
+  const [chartInterval, setChartInterval] = useState("240");
   const [entryAmount, setEntryAmount] = useState("5");
   const [sharePos, setSharePos] = useState(null);
   const [particles, setParticles] = useState([]);
@@ -222,6 +222,12 @@ export default function ArcGM() {
   const { data: userEntry, refetch: rEntry } = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"getUserEntry", args:[currentRoundId, address], enabled:!!currentRoundId && !!address });
   const { data: lbPage } = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"getLeaderboardPage", args:[0n, 50n] });
   const { data: lbStats } = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"getLeaderboardStats", args:[0n, 50n] });
+  const { data: winnersShareData } = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"winnersShare" });
+  const { data: devFeeData }       = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"devFee" });
+  const { data: marketingFeeData } = useReadContract({ address:CONTRACT_ADDRESS, abi:CONTRACT_ABI, functionName:"marketingFee" });
+  const winnersSharePct = winnersShareData ? Number(winnersShareData) : 90;
+  const devFeePct       = devFeeData       ? Number(devFeeData)       : 3;
+  const marketingFeePct = marketingFeeData ? Number(marketingFeeData) : 7;
   const { data: usdcBalance } = useReadContract({ address:USDC_ADDRESS, abi:USDC_ABI, functionName:"balanceOf", args:[address], enabled:!!address });
   const { data: usdcAllowance, refetch: rAllow } = useReadContract({ address:USDC_ADDRESS, abi:USDC_ABI, functionName:"allowance", args:[address, CONTRACT_ADDRESS], enabled:!!address });
 
@@ -415,7 +421,11 @@ export default function ArcGM() {
             )}
           </div>
 
-          <div>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <a href="https://faucet.circle.com" target="_blank" rel="noopener noreferrer"
+              style={{ fontSize:"0.75rem", color:"var(--arc)", textDecoration:"none", display:"flex", alignItems:"center", gap:4, background:"rgba(0,212,255,0.08)", border:"1px solid rgba(0,212,255,0.2)", padding:"6px 12px", borderRadius:20 }}>
+              🚰 Get USDC
+            </a>
             {!isConnected ? (
               <button className="btn btn-arc" style={{ padding:"10px 24px", fontSize:"0.85rem" }} onClick={() => connect({ connector:injected() })}>Connect Wallet</button>
             ) : isWrongNetwork ? (
@@ -515,6 +525,9 @@ export default function ArcGM() {
                         {priceDiff.up ? "▲ ABOVE target" : "▼ BELOW target"} · {Math.abs(priceDiff.pct).toFixed(2)}%
                       </div>
                     )}
+                    <div style={{ marginTop:8, display:"flex", alignItems:"center", gap:6, background:"rgba(255,184,0,0.06)", border:"1px solid rgba(255,184,0,0.15)", borderRadius:6, padding:"5px 10px", fontSize:"0.62rem", color:"rgba(255,184,0,0.7)" }}>
+                      ⚠ Testnet oracle prices may differ from live market · Chart shows Binance reference · Prediction uses Stork Oracle snapshot
+                    </div>
                   </div>
 
                   {/* Countdown boxes */}
@@ -532,7 +545,7 @@ export default function ArcGM() {
               {/* Round toggle */}
               <div style={{ display:"flex", background:"var(--surface2)", border:"1px solid var(--border)", borderRadius:8, padding:3, gap:3 }}>
                 {[[0,"⏱ 4 Hour Round"],[1,"📅 24 Hour Round"]].map(([rt,label]) => (
-                  <button key={rt} onClick={() => setRoundType(rt)}
+                  <button key={rt} onClick={() => { setRoundType(rt); setChartInterval(rt === 0 ? "240" : "D"); }}
                     style={{ flex:1, padding:8, border:"none", borderRadius:6, background: roundType===rt ? "rgba(0,212,255,0.1)" : "transparent", color: roundType===rt ? "var(--text)" : "var(--muted)", fontSize:"0.75rem", fontWeight:600, cursor:"pointer", fontFamily:"Outfit,sans-serif" }}>
                     {label}
                   </button>
@@ -654,11 +667,11 @@ export default function ArcGM() {
                 </div>
                 <div style={{ height:1, background:"var(--border)", margin:"8px 0" }} />
                 <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.72rem", marginBottom:4 }}><span style={{ color:"var(--muted)" }}>Min entry</span><span style={{ fontFamily:"DM Mono,monospace" }}>1 USDC</span></div>
-                <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.72rem" }}><span style={{ color:"var(--muted)" }}>Winners share</span><span style={{ fontFamily:"DM Mono,monospace", color:"var(--green)" }}>85%</span></div>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.72rem" }}><span style={{ color:"var(--muted)" }}>Winners share</span><span style={{ fontFamily:"DM Mono,monospace", color:"var(--green)" }}>{winnersSharePct}%</span></div>
                 <div style={{ background:"var(--surface2)", borderRadius:8, padding:"10px 12px", marginTop:10 }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem", marginBottom:3 }}><span style={{ color:"var(--muted)" }}>Winners</span><span style={{ fontFamily:"DM Mono,monospace", color:"var(--green)" }}>85%</span></div>
-                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem", marginBottom:3 }}><span style={{ color:"var(--muted)" }}>Dev</span><span style={{ fontFamily:"DM Mono,monospace" }}>5%</span></div>
-                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem" }}><span style={{ color:"var(--muted)" }}>Marketing</span><span style={{ fontFamily:"DM Mono,monospace" }}>10%</span></div>
+                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem", marginBottom:3 }}><span style={{ color:"var(--muted)" }}>Winners</span><span style={{ fontFamily:"DM Mono,monospace", color:"var(--green)" }}>{winnersSharePct}%</span></div>
+                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem", marginBottom:3 }}><span style={{ color:"var(--muted)" }}>Development</span><span style={{ fontFamily:"DM Mono,monospace" }}>{devFeePct}%</span></div>
+                  <div style={{ display:"flex", justifyContent:"space-between", fontSize:"0.68rem" }}><span style={{ color:"var(--muted)" }}>Marketing</span><span style={{ fontFamily:"DM Mono,monospace" }}>{marketingFeePct}%</span></div>
                 </div>
               </div>
 
