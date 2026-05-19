@@ -7,47 +7,50 @@ const fmt    = (a) => a ? `${a.slice(0,6)}...${a.slice(-4)}` : "";
 const fmtPts = (n) => (Number(n)/1e18).toFixed(1);
 const mTxt   = (s) => s>=15?"2x":s>=7?"1.5x":"1x";
 
-// Arc sunrise atmosphere background
+// Arc sunrise atmosphere — teal + warm yellow, light and airy
 function AmbientBg({ streak }) {
   return (
     <div style={{position:"fixed",inset:0,zIndex:0,overflow:"hidden"}}>
 
-      {/* Layer 1 — Arc deep navy base, not pure black */}
-      <div style={{position:"absolute",inset:0,background:"linear-gradient(175deg,#051824 0%,#071e30 25%,#062038 50%,#081a2a 75%,#051018 100%)"}}/>
+      {/* Layer 1 — base: deep Arc navy but lighter than before */}
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(175deg,#071e30 0%,#082436 20%,#092a40 45%,#082030 70%,#071828 100%)"}}/>
 
-      {/* Layer 2 — Arc sky blue to teal center gradient — the main atmosphere */}
-      <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 90% 70% at 55% 25%,rgba(30,110,160,0.55) 0%,rgba(15,80,120,0.35) 30%,rgba(5,50,90,0.15) 55%,transparent 75%)",animation:"meshDrift 22s ease-in-out infinite"}}/>
+      {/* Layer 2 — dominant teal/cyan atmosphere center-top, much brighter */}
+      <div style={{position:"absolute",inset:"-15%",background:"radial-gradient(ellipse 100% 80% at 52% 20%,rgba(15,160,180,0.42) 0%,rgba(10,130,155,0.28) 25%,rgba(8,100,130,0.14) 50%,transparent 70%)",animation:"meshDrift 22s ease-in-out infinite"}}/>
 
-      {/* Layer 3 — teal-cyan glow, center-right, the Arc signature color */}
-      <div style={{position:"absolute",top:"5%",left:"30%",right:"10%",height:"55%",background:"radial-gradient(ellipse 100% 80% at 60% 20%,rgba(20,140,160,0.22) 0%,rgba(10,100,130,0.12) 40%,transparent 70%)",animation:"glowPulse 9s ease-in-out infinite"}}/>
+      {/* Layer 3 — secondary teal bloom right side like Arc website */}
+      <div style={{position:"absolute",top:"-10%",right:"-5%",width:"60%",height:"70%",background:"radial-gradient(ellipse 80% 70% at 70% 20%,rgba(0,180,200,0.18) 0%,rgba(0,150,170,0.1) 40%,transparent 65%)",animation:"glowPulse 10s ease-in-out 2s infinite"}}/>
 
-      {/* Layer 4 — warm sunrise yellow-gold diffusion rising from bottom */}
-      <div style={{position:"absolute",bottom:"-5%",left:"10%",right:"10%",height:"50%",background:"radial-gradient(ellipse 80% 60% at 50% 100%,rgba(180,140,40,0.12) 0%,rgba(140,100,20,0.07) 40%,transparent 70%)",animation:"glowPulse 12s ease-in-out 3s infinite"}}/>
+      {/* Layer 4 — warm cream-yellow sunrise glow, rising from bottom center */}
+      <div style={{position:"absolute",bottom:"-10%",left:"15%",right:"15%",height:"65%",background:"radial-gradient(ellipse 90% 70% at 50% 100%,rgba(210,185,100,0.22) 0%,rgba(180,155,70,0.14) 30%,rgba(140,120,50,0.07) 55%,transparent 75%)",animation:"glowPulse 14s ease-in-out 4s infinite"}}/>
 
-      {/* Layer 5 — soft warm golden haze bottom-left corner (sunrise origin) */}
-      <div style={{position:"absolute",bottom:"-15%",left:"-10%",width:"60%",height:"60%",background:"radial-gradient(ellipse 70% 60% at 20% 90%,rgba(200,160,50,0.09) 0%,rgba(160,110,30,0.05) 45%,transparent 70%)",animation:"glowPulse 15s ease-in-out 6s infinite"}}/>
+      {/* Layer 5 — warm yellow lift bottom-left corner, sunrise origin */}
+      <div style={{position:"absolute",bottom:"-5%",left:"-5%",width:"55%",height:"55%",background:"radial-gradient(ellipse 75% 65% at 15% 95%,rgba(200,175,80,0.16) 0%,rgba(170,140,55,0.09) 40%,transparent 68%)",animation:"glowPulse 18s ease-in-out 7s infinite"}}/>
 
-      {/* Layer 6 — Arc curved SVG lines like the official website */}
-      <div style={{position:"absolute",inset:0,opacity:0.055,animation:"curveDrift 25s ease-in-out infinite"}}>
+      {/* Layer 6 — warm teal blend mid-screen, bridging teal and yellow */}
+      <div style={{position:"absolute",top:"35%",left:"5%",right:"5%",height:"45%",background:"radial-gradient(ellipse 95% 60% at 50% 50%,rgba(10,150,160,0.1) 0%,rgba(15,130,130,0.06) 50%,transparent 80%)"}}/>
+
+      {/* Layer 7 — Arc curved SVG lines in teal, like official website */}
+      <div style={{position:"absolute",inset:0,opacity:0.07,animation:"curveDrift 28s ease-in-out infinite"}}>
         <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="900" cy="-60" rx="800" ry="420" stroke="rgba(100,200,220,0.5)" strokeWidth="0.7" filter="url(#b1)"/>
-          <ellipse cx="860" cy="-20" rx="580" ry="300" stroke="rgba(80,180,200,0.4)" strokeWidth="0.5" filter="url(#b1)"/>
-          <ellipse cx="1300" cy="750" rx="600" ry="320" stroke="rgba(60,160,180,0.3)" strokeWidth="0.5" filter="url(#b1)"/>
-          <defs><filter id="b1"><feGaussianBlur stdDeviation="5"/></filter></defs>
+          <path d="M-100 600 Q400 300 900 450 Q1200 550 1600 350" stroke="rgba(80,210,220,0.35)" strokeWidth="0.8" fill="none" filter="url(#bArc)"/>
+          <path d="M-100 650 Q400 380 950 500 Q1250 590 1600 420" stroke="rgba(60,190,200,0.22)" strokeWidth="0.6" fill="none" filter="url(#bArc)"/>
+          <path d="M200 750 Q600 500 1100 600 Q1350 660 1600 520" stroke="rgba(40,170,180,0.15)" strokeWidth="0.5" fill="none" filter="url(#bArc)"/>
+          <defs><filter id="bArc"><feGaussianBlur stdDeviation="6"/></filter></defs>
         </svg>
       </div>
 
-      {/* Layer 7 — soft cinematic haze, mid-screen horizontal band */}
-      <div style={{position:"absolute",top:"30%",left:0,right:0,height:"40%",background:"linear-gradient(180deg,transparent 0%,rgba(20,80,110,0.08) 30%,rgba(15,60,90,0.06) 60%,transparent 100%)"}}/>
+      {/* Layer 8 — grain texture, soft-light blend for premium feel */}
+      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E\")",opacity:0.5,mixBlendMode:"soft-light"}}/>
 
-      {/* Layer 8 — grain noise for premium depth */}
-      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E\")",opacity:0.6,mixBlendMode:"soft-light"}}/>
+      {/* Layer 9 — softer vignette, not black — lets bottom warmth breathe */}
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 95% 88% at 50% 42%,transparent 30%,rgba(4,12,22,0.45) 100%)",pointerEvents:"none"}}/>
 
-      {/* Layer 9 — vignette — softer than before, not pure black edges */}
-      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 90% 85% at 50% 45%,transparent 35%,rgba(3,10,18,0.55) 100%)",pointerEvents:"none"}}/>
+      {/* Layer 10 — teal horizon line top */}
+      <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(0,180,200,0.18),rgba(20,200,220,0.28),rgba(0,180,200,0.18),transparent)"}}/>
 
-      {/* Layer 10 — top horizon line, Arc teal */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(20,140,160,0.15),rgba(30,160,180,0.22),rgba(20,140,160,0.15),transparent)"}}/>
+      {/* Layer 11 — warm yellow horizon lift at bottom */}
+      <div style={{position:"absolute",bottom:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(200,175,80,0.12),rgba(210,185,90,0.18),rgba(200,175,80,0.12),transparent)"}}/>
 
     </div>
   );
@@ -174,7 +177,7 @@ export default function App() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html,body{height:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-        body{font-family:'Inter',sans-serif;background:#051824;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',sans-serif;background:#071e30;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         @keyframes slideRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
@@ -227,7 +230,7 @@ export default function App() {
       <main style={{position:"relative",zIndex:10,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"100px 24px 120px",textAlign:"center"}}>
 
         {/* Hero radial glow — illuminates text from behind */}
-        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(400px,60vw)",background:"radial-gradient(ellipse 100% 100% at 50% 50%,rgba(20,130,155,0.07) 0%,rgba(10,90,120,0.04) 40%,transparent 70%)",pointerEvents:"none",animation:"glowPulse 6s ease-in-out infinite",zIndex:0}}/>
+        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(400px,60vw)",background:"radial-gradient(ellipse 100% 100% at 50% 50%,rgba(0,180,200,0.1) 0%,rgba(10,140,160,0.05) 40%,transparent 70%)",pointerEvents:"none",animation:"glowPulse 6s ease-in-out infinite",zIndex:0}}/>
 
         {!isConnected?(
           // NOT CONNECTED
@@ -258,9 +261,9 @@ export default function App() {
               </div>
             )}
             <button onClick={doGM} disabled={gmP||gmC}
-              style={{fontSize:"clamp(4.5rem,14vw,9rem)",fontWeight:900,color:gmP||gmC?"rgba(255,255,255,0.2)":"#fff",background:"transparent",border:"none",letterSpacing:"-.04em",lineHeight:.9,cursor:gmP||gmC?"not-allowed":"pointer",transition:"all .3s",display:"block",marginBottom:20,textShadow:gmP||gmC?"none":"0 0 120px rgba(20,140,160,0.2), 0 0 40px rgba(255,255,255,0.07)"}}
-              onMouseEnter={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 160px rgba(20,140,160,0.32), 0 0 60px rgba(255,255,255,0.1)"}}
-              onMouseLeave={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 120px rgba(20,140,160,0.2), 0 0 40px rgba(255,255,255,0.07)"}}>
+              style={{fontSize:"clamp(4.5rem,14vw,9rem)",fontWeight:900,color:gmP||gmC?"rgba(255,255,255,0.2)":"#fff",background:"transparent",border:"none",letterSpacing:"-.04em",lineHeight:.9,cursor:gmP||gmC?"not-allowed":"pointer",transition:"all .3s",display:"block",marginBottom:20,textShadow:gmP||gmC?"none":"0 0 120px rgba(0,190,210,0.22), 0 0 40px rgba(255,255,255,0.08)"}}
+              onMouseEnter={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 160px rgba(0,190,210,0.35), 0 0 60px rgba(255,255,255,0.12)"}}
+              onMouseLeave={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 120px rgba(0,190,210,0.22), 0 0 40px rgba(255,255,255,0.08)"}}>
               {gmP?"...":gmC?"...":"gm"}
             </button>
             <div style={{fontSize:"clamp(.7rem,1.5vw,.8rem)",color:"rgba(255,255,255,0.18)",letterSpacing:".2em",textTransform:"uppercase",fontWeight:400,marginBottom:48}}>
@@ -305,7 +308,7 @@ export default function App() {
             <div style={{fontSize:"clamp(.65rem,1.2vw,.75rem)",color:"rgba(255,255,255,0.2)",letterSpacing:".2em",textTransform:"uppercase",marginBottom:12,fontWeight:400}}>
               next gm in
             </div>
-            <div style={{fontSize:"clamp(3rem,10vw,6rem)",fontWeight:900,color:"#fff",letterSpacing:"-.03em",lineHeight:1,marginBottom:48,fontVariantNumeric:"tabular-nums",textShadow:"0 0 80px rgba(20,140,160,0.18)"}}>
+            <div style={{fontSize:"clamp(3rem,10vw,6rem)",fontWeight:900,color:"#fff",letterSpacing:"-.03em",lineHeight:1,marginBottom:48,fontVariantNumeric:"tabular-nums",textShadow:"0 0 80px rgba(0,190,210,0.2)"}}>
               {pad(hh)}:{pad(mm)}:{pad(ss)}
             </div>
 
