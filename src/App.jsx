@@ -7,48 +7,58 @@ const fmt    = (a) => a ? `${a.slice(0,6)}...${a.slice(-4)}` : "";
 const fmtPts = (n) => (Number(n)/1e18).toFixed(1);
 const mTxt   = (s) => s>=15?"2x":s>=7?"1.5x":"1x";
 
-// Full-screen Arc sunrise atmosphere — no darkness, cinematic gradient fills entire viewport
+// Arc sunrise atmosphere — 50% blue, 30% teal, 20% warm
 function AmbientBg() {
   return (
     <div style={{position:"fixed",inset:0,zIndex:0,overflow:"hidden"}}>
 
-      {/* BASE — full screen Arc gradient, top to bottom like the website screenshot */}
-      {/* Top: deep Arc blue. Middle: rich teal-cyan. Bottom: warm cream-yellow */}
-      <div style={{position:"absolute",inset:0,background:"linear-gradient(175deg,#0a2a42 0%,#0b3550 8%,#0d4060 18%,#0e4d6e 28%,#0f5570 38%,#0e5c72 48%,#0d5e6a 55%,#0c5a5e 62%,#0b5450 68%,#0d5240 72%,#104a30 76%,#164020 80%,#1e3e18 84%,#263a14 88%,#2e3a14 92%,#382e18 100%)"}}/>
+      {/* BASE — Arc blue top, teal center, warm bottom */}
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(175deg,#071d30 0%,#092540 12%,#0a2e50 25%,#0b3858 38%,#0c3f60 50%,#0b3d58 60%,#0a3848 68%,#0b3438 74%,#0d3028 80%,#132a1c 86%,#1a2816 92%,#222616 100%)"}}/>
 
-      {/* TEAL BLOOM — center atmospheric fill, covers most of screen */}
-      <div style={{position:"absolute",inset:"-30%",background:"radial-gradient(ellipse 120% 100% at 50% 40%,rgba(0,170,190,0.35) 0%,rgba(0,150,170,0.2) 25%,rgba(0,120,140,0.08) 50%,transparent 70%)",animation:"meshDrift 24s ease-in-out infinite"}}/>
+      {/* TEAL ACCENT — center atmosphere, reduced to 30% role */}
+      <div style={{position:"absolute",inset:"-20%",background:"radial-gradient(ellipse 110% 80% at 52% 38%,rgba(0,155,175,0.18) 0%,rgba(0,130,150,0.1) 30%,rgba(0,100,120,0.04) 55%,transparent 70%)",animation:"meshDrift 24s ease-in-out infinite"}}/>
 
-      {/* WARM YELLOW SUNRISE — rises from bottom, wide and environmental */}
-      <div style={{position:"absolute",bottom:"-20%",left:"-10%",right:"-10%",height:"70%",background:"radial-gradient(ellipse 110% 80% at 50% 100%,rgba(220,195,110,0.28) 0%,rgba(195,170,85,0.18) 25%,rgba(160,140,65,0.1) 45%,rgba(120,110,50,0.04) 60%,transparent 75%)",animation:"glowPulse 16s ease-in-out infinite"}}/>
+      {/* ARC BLUE dominance top third */}
+      <div style={{position:"absolute",top:"-15%",left:"-10%",right:"-10%",height:"60%",background:"radial-gradient(ellipse 110% 80% at 50% 0%,rgba(10,60,110,0.45) 0%,rgba(8,50,90,0.25) 40%,transparent 70%)"}}/>
 
-      {/* WARM GLOW LEFT — sunrise bleeds left edge */}
-      <div style={{position:"absolute",bottom:"-10%",left:"-15%",width:"55%",height:"65%",background:"radial-gradient(ellipse 80% 70% at 10% 90%,rgba(210,185,95,0.2) 0%,rgba(180,155,70,0.1) 35%,transparent 65%)",animation:"glowPulse 20s ease-in-out 5s infinite"}}/>
+      {/* TEAL LEFT — soft, reduced */}
+      <div style={{position:"absolute",top:"10%",left:"-10%",width:"50%",height:"60%",background:"radial-gradient(ellipse 70% 65% at 10% 30%,rgba(0,145,165,0.12) 0%,rgba(0,120,140,0.05) 45%,transparent 68%)",animation:"glowPulse 16s ease-in-out 2s infinite"}}/>
 
-      {/* WARM GLOW RIGHT — sunrise bleeds right edge */}
-      <div style={{position:"absolute",bottom:"-10%",right:"-15%",width:"55%",height:"65%",background:"radial-gradient(ellipse 80% 70% at 90% 90%,rgba(210,185,95,0.18) 0%,rgba(180,155,70,0.09) 35%,transparent 65%)",animation:"glowPulse 18s ease-in-out 8s infinite"}}/>
+      {/* TEAL RIGHT — soft, reduced */}
+      <div style={{position:"absolute",top:"5%",right:"-10%",width:"50%",height:"60%",background:"radial-gradient(ellipse 70% 60% at 90% 20%,rgba(0,155,175,0.11) 0%,rgba(0,125,145,0.05) 42%,transparent 65%)",animation:"glowPulse 13s ease-in-out 5s infinite"}}/>
 
-      {/* TEAL LEFT BLOOM — fills left side with atmospheric teal */}
-      <div style={{position:"absolute",top:"-10%",left:"-10%",width:"60%",height:"70%",background:"radial-gradient(ellipse 80% 75% at 10% 20%,rgba(0,160,180,0.22) 0%,rgba(0,130,150,0.1) 40%,transparent 65%)",animation:"glowPulse 14s ease-in-out 3s infinite"}}/>
+      {/* WARM SUNRISE — bottom, wider and more visible */}
+      <div style={{position:"absolute",bottom:"-15%",left:"-5%",right:"-5%",height:"60%",background:"radial-gradient(ellipse 105% 75% at 50% 100%,rgba(200,175,90,0.2) 0%,rgba(175,150,70,0.12) 28%,rgba(140,120,55,0.06) 50%,transparent 70%)",animation:"glowPulse 18s ease-in-out infinite"}}/>
 
-      {/* TEAL RIGHT BLOOM — fills right side */}
-      <div style={{position:"absolute",top:"-5%",right:"-10%",width:"55%",height:"65%",background:"radial-gradient(ellipse 75% 70% at 90% 15%,rgba(0,175,195,0.2) 0%,rgba(0,145,165,0.09) 40%,transparent 65%)",animation:"glowPulse 11s ease-in-out 6s infinite"}}/>
+      {/* WARM LEFT EDGE */}
+      <div style={{position:"absolute",bottom:"-5%",left:"-10%",width:"45%",height:"55%",background:"radial-gradient(ellipse 70% 60% at 10% 95%,rgba(195,168,80,0.14) 0%,rgba(165,140,60,0.07) 40%,transparent 65%)",animation:"glowPulse 22s ease-in-out 8s infinite"}}/>
 
-      {/* ARC CURVED LINES — wide sweeping like the official website */}
-      <div style={{position:"absolute",inset:0,opacity:0.09,animation:"curveDrift 30s ease-in-out infinite"}}>
+      {/* WARM RIGHT EDGE */}
+      <div style={{position:"absolute",bottom:"-5%",right:"-10%",width:"45%",height:"55%",background:"radial-gradient(ellipse 70% 60% at 90% 95%,rgba(195,168,80,0.13) 0%,rgba(165,140,60,0.06) 40%,transparent 65%)",animation:"glowPulse 19s ease-in-out 11s infinite"}}/>
+
+      {/* READABILITY — soft dark backing bottom-left links area */}
+      <div style={{position:"absolute",bottom:0,left:0,width:"220px",height:"120px",background:"radial-gradient(ellipse 100% 100% at 0% 100%,rgba(4,12,22,0.35) 0%,transparent 70%)",pointerEvents:"none"}}/>
+
+      {/* READABILITY — soft dark backing bottom-right links area */}
+      <div style={{position:"absolute",bottom:0,right:0,width:"180px",height:"100px",background:"radial-gradient(ellipse 100% 100% at 100% 100%,rgba(4,12,22,0.3) 0%,transparent 70%)",pointerEvents:"none"}}/>
+
+      {/* READABILITY — subtle backing behind center bottom stat text */}
+      <div style={{position:"absolute",bottom:"10%",left:"20%",right:"20%",height:"80px",background:"radial-gradient(ellipse 100% 100% at 50% 100%,rgba(4,12,22,0.2) 0%,transparent 70%)",pointerEvents:"none"}}/>
+
+      {/* ARC CURVES — wide sweeping, reduced opacity */}
+      <div style={{position:"absolute",inset:0,opacity:0.06,animation:"curveDrift 30s ease-in-out infinite"}}>
         <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
-          <path d="M-200 800 Q200 550 600 620 Q1000 690 1200 500 Q1350 380 1640 420" stroke="rgba(150,230,240,0.5)" strokeWidth="1" fill="none" filter="url(#bA)"/>
-          <path d="M-200 860 Q250 620 650 680 Q1050 740 1250 560 Q1380 450 1640 490" stroke="rgba(120,210,220,0.35)" strokeWidth="0.7" fill="none" filter="url(#bA)"/>
-          <path d="M-200 740 Q150 500 550 570 Q900 640 1150 440 Q1320 320 1640 360" stroke="rgba(180,235,240,0.25)" strokeWidth="0.6" fill="none" filter="url(#bA)"/>
+          <path d="M-200 800 Q200 550 600 620 Q1000 690 1200 500 Q1350 380 1640 420" stroke="rgba(140,220,230,0.6)" strokeWidth="1" fill="none" filter="url(#bA)"/>
+          <path d="M-200 860 Q250 620 650 680 Q1050 740 1250 560 Q1380 450 1640 490" stroke="rgba(110,200,210,0.4)" strokeWidth="0.7" fill="none" filter="url(#bA)"/>
           <defs><filter id="bA"><feGaussianBlur stdDeviation="8"/></filter></defs>
         </svg>
       </div>
 
-      {/* GRAIN TEXTURE — premium depth */}
-      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E\")",opacity:0.55,mixBlendMode:"soft-light"}}/>
+      {/* GRAIN — premium texture */}
+      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E\")",opacity:0.5,mixBlendMode:"soft-light"}}/>
 
-      {/* VERY SOFT VIGNETTE — just slight edge darkening, not dominant */}
-      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 100% 95% at 50% 48%,transparent 45%,rgba(5,15,25,0.28) 100%)",pointerEvents:"none"}}/>
+      {/* VIGNETTE — very subtle */}
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 105% 100% at 50% 45%,transparent 40%,rgba(4,12,22,0.22) 100%)",pointerEvents:"none"}}/>
 
     </div>
   );
@@ -175,7 +185,7 @@ export default function App() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html,body{height:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-        body{font-family:'Inter',sans-serif;background:#0d4060;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',sans-serif;background:#092540;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         @keyframes slideRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
@@ -228,7 +238,7 @@ export default function App() {
       <main style={{position:"relative",zIndex:10,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"100px 24px 120px",textAlign:"center"}}>
 
         {/* Hero radial glow — illuminates text from behind */}
-        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(400px,60vw)",background:"radial-gradient(ellipse 100% 100% at 50% 50%,rgba(0,180,200,0.1) 0%,rgba(10,140,160,0.05) 40%,transparent 70%)",pointerEvents:"none",animation:"glowPulse 6s ease-in-out infinite",zIndex:0}}/>
+        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(800px,95vw)",height:"min(500px,70vw)",background:"radial-gradient(ellipse 100% 100% at 50% 50%,rgba(0,155,175,0.06) 0%,rgba(8,50,90,0.04) 45%,transparent 72%)",pointerEvents:"none",animation:"glowPulse 8s ease-in-out infinite",zIndex:0}}/>
 
         {!isConnected?(
           // NOT CONNECTED
@@ -236,7 +246,7 @@ export default function App() {
             <div style={{fontSize:"clamp(3rem,10vw,6.5rem)",fontWeight:900,color:"#fff",letterSpacing:"-.04em",lineHeight:.95,marginBottom:24,textShadow:"0 0 80px rgba(167,139,250,0.15)"}}>
               gm, Arc.
             </div>
-            <div style={{fontSize:"clamp(.95rem,2.5vw,1.15rem)",color:"rgba(255,255,255,0.3)",fontWeight:300,lineHeight:1.7,marginBottom:48,maxWidth:400,margin:"0 auto 48px",letterSpacing:".01em"}}>
+            <div style={{fontSize:"clamp(.95rem,2.5vw,1.15rem)",color:"rgba(255,255,255,0.55)",fontWeight:300,lineHeight:1.7,marginBottom:48,maxWidth:400,margin:"0 auto 48px",letterSpacing:".01em",textShadow:"0 1px 8px rgba(4,12,22,0.6)"}}>
               Build streaks. Earn reputation.<br/>The daily social layer for the Arc ecosystem.
             </div>
             <button onClick={()=>connect({connector:injected()})}
@@ -245,7 +255,7 @@ export default function App() {
               onMouseLeave={e=>{e.target.style.background="rgba(255,255,255,0.07)";e.target.style.color="rgba(255,255,255,0.8)";e.target.style.borderColor="rgba(255,255,255,0.12)"}}>
               Connect to start
             </button>
-            <div style={{marginTop:56,fontSize:".75rem",color:"rgba(255,255,255,0.15)",letterSpacing:".08em"}}>
+            <div style={{marginTop:56,fontSize:".75rem",color:"rgba(255,255,255,0.45)",letterSpacing:".08em",textShadow:"0 1px 6px rgba(4,12,22,0.7)"}}>
               {gCount.toLocaleString()} GMs · {uCountN} participants
             </div>
           </div>
@@ -338,31 +348,31 @@ export default function App() {
       {/* BOTTOM LEFT */}
       <div style={{position:"fixed",bottom:28,left:24,zIndex:50,display:"flex",flexDirection:"column",gap:10}}>
         <button onClick={()=>{const text=`${streak>0?`${streak} day streak on`:"saying gm on"} ArcGM — the daily social layer for Arc ecosystem.\narcgm.vercel.app\n#ArcGM #ArcNetwork`;window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,"_blank");}}
-          style={{background:"none",border:"none",fontSize:".72rem",color:"rgba(255,255,255,0.25)",textAlign:"left",padding:0,display:"flex",alignItems:"center",gap:5,transition:"color .2s",letterSpacing:".04em"}}
-          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.6)"}
-          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>
-          <span style={{fontSize:".65rem",opacity:.6}}>✦</span> Share on X
+          style={{background:"none",border:"none",fontSize:".72rem",color:"rgba(255,255,255,0.55)",textAlign:"left",padding:0,display:"flex",alignItems:"center",gap:5,transition:"color .2s",letterSpacing:".04em",textShadow:"0 1px 6px rgba(4,12,22,0.8)"}}
+          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.9)"}
+          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.55)"}>
+          <span style={{fontSize:".65rem",opacity:.7}}>✦</span> Share on X
         </button>
         <a href="https://x.com/mkoneth" target="_blank" rel="noopener noreferrer"
-          style={{fontSize:".72rem",color:"rgba(255,255,255,0.25)",display:"flex",alignItems:"center",gap:5,transition:"color .2s",letterSpacing:".04em"}}
-          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.6)"}
-          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>
-          <span style={{fontSize:".65rem",opacity:.6}}>✦</span> Follow @mkoneth
+          style={{fontSize:".72rem",color:"rgba(255,255,255,0.55)",display:"flex",alignItems:"center",gap:5,transition:"color .2s",letterSpacing:".04em",textShadow:"0 1px 6px rgba(4,12,22,0.8)"}}
+          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.9)"}
+          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.55)"}>
+          <span style={{fontSize:".65rem",opacity:.7}}>✦</span> Follow @mkoneth
         </a>
       </div>
 
       {/* BOTTOM RIGHT */}
       <div style={{position:"fixed",bottom:28,right:24,zIndex:50,display:"flex",flexDirection:"column",gap:10,alignItems:"flex-end"}}>
         <a href="https://testnet.arcscan.app/address/0x4062bf4D6650bA60d46d6177F2d880020B84C3a6" target="_blank" rel="noopener noreferrer"
-          style={{fontSize:".72rem",color:"rgba(255,255,255,0.25)",transition:"color .2s",letterSpacing:".04em"}}
-          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.6)"}
-          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>
+          style={{fontSize:".72rem",color:"rgba(255,255,255,0.55)",transition:"color .2s",letterSpacing:".04em",textShadow:"0 1px 6px rgba(4,12,22,0.8)"}}
+          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.9)"}
+          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.55)"}>
           Explorer
         </a>
         <a href="https://faucet.circle.com" target="_blank" rel="noopener noreferrer"
-          style={{fontSize:".72rem",color:"rgba(255,255,255,0.25)",transition:"color .2s",letterSpacing:".04em"}}
-          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.6)"}
-          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>
+          style={{fontSize:".72rem",color:"rgba(255,255,255,0.55)",transition:"color .2s",letterSpacing:".04em",textShadow:"0 1px 6px rgba(4,12,22,0.8)"}}
+          onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.9)"}
+          onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.55)"}>
           Get USDC
         </a>
       </div>
