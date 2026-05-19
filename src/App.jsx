@@ -7,44 +7,47 @@ const fmt    = (a) => a ? `${a.slice(0,6)}...${a.slice(-4)}` : "";
 const fmtPts = (n) => (Number(n)/1e18).toFixed(1);
 const mTxt   = (s) => s>=15?"2x":s>=7?"1.5x":"1x";
 
-// Arc-style layered atmospheric background
+// Arc sunrise atmosphere background
 function AmbientBg({ streak }) {
-  // Arc brand blues shift with streak level
-  const glowColor = streak>=15 ? "rgba(74,222,128,0.06)" : streak>=7 ? "rgba(96,165,250,0.07)" : "rgba(77,162,255,0.08)";
-  const glowColor2 = streak>=15 ? "rgba(74,222,128,0.03)" : streak>=7 ? "rgba(77,162,255,0.04)" : "rgba(14,94,163,0.12)";
   return (
     <div style={{position:"fixed",inset:0,zIndex:0,overflow:"hidden"}}>
 
-      {/* Layer 1 — deep navy base */}
-      <div style={{position:"absolute",inset:0,background:"linear-gradient(160deg,#040810 0%,#060c18 40%,#050912 70%,#030608 100%)"}}/>
+      {/* Layer 1 — Arc deep navy base, not pure black */}
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(175deg,#051824 0%,#071e30 25%,#062038 50%,#081a2a 75%,#051018 100%)"}}/>
 
-      {/* Layer 2 — Arc blue atmospheric mesh, slow drift */}
-      <div style={{position:"absolute",inset:"-20%",background:`radial-gradient(ellipse 70% 55% at 55% 15%,rgba(14,60,120,0.45) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 20% 60%,rgba(8,40,90,0.3) 0%,transparent 55%),radial-gradient(ellipse 40% 35% at 80% 75%,rgba(10,50,100,0.2) 0%,transparent 50%)`,animation:"meshDrift 18s ease-in-out infinite",transition:"opacity 2s ease"}}/>
+      {/* Layer 2 — Arc sky blue to teal center gradient — the main atmosphere */}
+      <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 90% 70% at 55% 25%,rgba(30,110,160,0.55) 0%,rgba(15,80,120,0.35) 30%,rgba(5,50,90,0.15) 55%,transparent 75%)",animation:"meshDrift 22s ease-in-out infinite"}}/>
 
-      {/* Layer 3 — soft cyan glow top center (Arc accent) */}
-      <div style={{position:"absolute",top:"-5%",left:"25%",right:"25%",height:"50%",background:`radial-gradient(ellipse 100% 80% at 50% 0%,${glowColor} 0%,transparent 70%)`,animation:"glowPulse 8s ease-in-out infinite",transition:"background 2.5s ease"}}/>
+      {/* Layer 3 — teal-cyan glow, center-right, the Arc signature color */}
+      <div style={{position:"absolute",top:"5%",left:"30%",right:"10%",height:"55%",background:"radial-gradient(ellipse 100% 80% at 60% 20%,rgba(20,140,160,0.22) 0%,rgba(10,100,130,0.12) 40%,transparent 70%)",animation:"glowPulse 9s ease-in-out infinite"}}/>
 
-      {/* Layer 4 — secondary deep glow bottom right */}
-      <div style={{position:"absolute",bottom:"-10%",right:"-5%",width:"60%",height:"60%",background:`radial-gradient(ellipse 80% 70% at 70% 80%,${glowColor2} 0%,transparent 65%)`,animation:"glowPulse 12s ease-in-out 4s infinite"}}/>
+      {/* Layer 4 — warm sunrise yellow-gold diffusion rising from bottom */}
+      <div style={{position:"absolute",bottom:"-5%",left:"10%",right:"10%",height:"50%",background:"radial-gradient(ellipse 80% 60% at 50% 100%,rgba(180,140,40,0.12) 0%,rgba(140,100,20,0.07) 40%,transparent 70%)",animation:"glowPulse 12s ease-in-out 3s infinite"}}/>
 
-      {/* Layer 5 — Arc curved line SVG overlay */}
-      <div style={{position:"absolute",inset:0,opacity:0.035,animation:"curveDrift 20s ease-in-out infinite"}}>
-        <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="600" cy="-80" rx="700" ry="400" stroke="rgba(77,162,255,0.6)" strokeWidth="0.8" filter="url(#blur1)"/>
-          <ellipse cx="600" cy="-40" rx="500" ry="280" stroke="rgba(77,162,255,0.4)" strokeWidth="0.6" filter="url(#blur1)"/>
-          <ellipse cx="1100" cy="700" rx="500" ry="300" stroke="rgba(77,162,255,0.3)" strokeWidth="0.5" filter="url(#blur1)"/>
-          <defs><filter id="blur1"><feGaussianBlur stdDeviation="4"/></filter></defs>
+      {/* Layer 5 — soft warm golden haze bottom-left corner (sunrise origin) */}
+      <div style={{position:"absolute",bottom:"-15%",left:"-10%",width:"60%",height:"60%",background:"radial-gradient(ellipse 70% 60% at 20% 90%,rgba(200,160,50,0.09) 0%,rgba(160,110,30,0.05) 45%,transparent 70%)",animation:"glowPulse 15s ease-in-out 6s infinite"}}/>
+
+      {/* Layer 6 — Arc curved SVG lines like the official website */}
+      <div style={{position:"absolute",inset:0,opacity:0.055,animation:"curveDrift 25s ease-in-out infinite"}}>
+        <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="900" cy="-60" rx="800" ry="420" stroke="rgba(100,200,220,0.5)" strokeWidth="0.7" filter="url(#b1)"/>
+          <ellipse cx="860" cy="-20" rx="580" ry="300" stroke="rgba(80,180,200,0.4)" strokeWidth="0.5" filter="url(#b1)"/>
+          <ellipse cx="1300" cy="750" rx="600" ry="320" stroke="rgba(60,160,180,0.3)" strokeWidth="0.5" filter="url(#b1)"/>
+          <defs><filter id="b1"><feGaussianBlur stdDeviation="5"/></filter></defs>
         </svg>
       </div>
 
-      {/* Layer 6 — grain/noise texture for premium feel */}
-      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")",opacity:0.55,mixBlendMode:"overlay"}}/>
+      {/* Layer 7 — soft cinematic haze, mid-screen horizontal band */}
+      <div style={{position:"absolute",top:"30%",left:0,right:0,height:"40%",background:"linear-gradient(180deg,transparent 0%,rgba(20,80,110,0.08) 30%,rgba(15,60,90,0.06) 60%,transparent 100%)"}}/>
 
-      {/* Layer 7 — vignette edges */}
-      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 85% 80% at 50% 50%,transparent 40%,rgba(2,4,10,0.7) 100%)",pointerEvents:"none"}}/>
+      {/* Layer 8 — grain noise for premium depth */}
+      <div style={{position:"absolute",inset:0,backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E\")",opacity:0.6,mixBlendMode:"soft-light"}}/>
 
-      {/* Layer 8 — very subtle top edge glow (cinematic) */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(77,162,255,0.12),rgba(77,162,255,0.18),rgba(77,162,255,0.12),transparent)"}}/>
+      {/* Layer 9 — vignette — softer than before, not pure black edges */}
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 90% 85% at 50% 45%,transparent 35%,rgba(3,10,18,0.55) 100%)",pointerEvents:"none"}}/>
+
+      {/* Layer 10 — top horizon line, Arc teal */}
+      <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(20,140,160,0.15),rgba(30,160,180,0.22),rgba(20,140,160,0.15),transparent)"}}/>
 
     </div>
   );
@@ -171,7 +174,7 @@ export default function App() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html,body{height:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-        body{font-family:'Inter',sans-serif;background:#040810;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',sans-serif;background:#051824;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         @keyframes slideRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
@@ -224,7 +227,7 @@ export default function App() {
       <main style={{position:"relative",zIndex:10,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"100px 24px 120px",textAlign:"center"}}>
 
         {/* Hero radial glow — illuminates text from behind */}
-        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(400px,60vw)",background:`radial-gradient(ellipse 100% 100% at 50% 50%,rgba(77,162,255,0.06) 0%,rgba(14,60,120,0.04) 40%,transparent 70%)`,pointerEvents:"none",animation:"glowPulse 6s ease-in-out infinite",zIndex:0}}/>
+        <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(400px,60vw)",background:"radial-gradient(ellipse 100% 100% at 50% 50%,rgba(20,130,155,0.07) 0%,rgba(10,90,120,0.04) 40%,transparent 70%)",pointerEvents:"none",animation:"glowPulse 6s ease-in-out infinite",zIndex:0}}/>
 
         {!isConnected?(
           // NOT CONNECTED
@@ -255,9 +258,9 @@ export default function App() {
               </div>
             )}
             <button onClick={doGM} disabled={gmP||gmC}
-              style={{fontSize:"clamp(4.5rem,14vw,9rem)",fontWeight:900,color:gmP||gmC?"rgba(255,255,255,0.2)":"#fff",background:"transparent",border:"none",letterSpacing:"-.04em",lineHeight:.9,cursor:gmP||gmC?"not-allowed":"pointer",transition:"all .3s",display:"block",marginBottom:20,textShadow:gmP||gmC?"none":`0 0 120px rgba(77,162,255,0.18), 0 0 40px rgba(255,255,255,0.06)`}}
-              onMouseEnter={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 160px rgba(77,162,255,0.28), 0 0 60px rgba(255,255,255,0.1)"}}
-              onMouseLeave={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 120px rgba(77,162,255,0.18), 0 0 40px rgba(255,255,255,0.06)"}}>
+              style={{fontSize:"clamp(4.5rem,14vw,9rem)",fontWeight:900,color:gmP||gmC?"rgba(255,255,255,0.2)":"#fff",background:"transparent",border:"none",letterSpacing:"-.04em",lineHeight:.9,cursor:gmP||gmC?"not-allowed":"pointer",transition:"all .3s",display:"block",marginBottom:20,textShadow:gmP||gmC?"none":"0 0 120px rgba(20,140,160,0.2), 0 0 40px rgba(255,255,255,0.07)"}}
+              onMouseEnter={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 160px rgba(20,140,160,0.32), 0 0 60px rgba(255,255,255,0.1)"}}
+              onMouseLeave={e=>{if(!gmP&&!gmC)e.target.style.textShadow="0 0 120px rgba(20,140,160,0.2), 0 0 40px rgba(255,255,255,0.07)"}}>
               {gmP?"...":gmC?"...":"gm"}
             </button>
             <div style={{fontSize:"clamp(.7rem,1.5vw,.8rem)",color:"rgba(255,255,255,0.18)",letterSpacing:".2em",textTransform:"uppercase",fontWeight:400,marginBottom:48}}>
@@ -302,7 +305,7 @@ export default function App() {
             <div style={{fontSize:"clamp(.65rem,1.2vw,.75rem)",color:"rgba(255,255,255,0.2)",letterSpacing:".2em",textTransform:"uppercase",marginBottom:12,fontWeight:400}}>
               next gm in
             </div>
-            <div style={{fontSize:"clamp(3rem,10vw,6rem)",fontWeight:900,color:"#fff",letterSpacing:"-.03em",lineHeight:1,marginBottom:48,fontVariantNumeric:"tabular-nums",textShadow:"0 0 80px rgba(77,162,255,0.15)"}}>
+            <div style={{fontSize:"clamp(3rem,10vw,6rem)",fontWeight:900,color:"#fff",letterSpacing:"-.03em",lineHeight:1,marginBottom:48,fontVariantNumeric:"tabular-nums",textShadow:"0 0 80px rgba(20,140,160,0.18)"}}>
               {pad(hh)}:{pad(mm)}:{pad(ss)}
             </div>
 
